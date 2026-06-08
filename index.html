@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>عَ الماشي — بطاطا و سندويشات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Changa:wght@500;600;700;800&family=Tajawal:wght@400;500;700;800&family=Lalezar&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --red: #DA1F26;
+    --red-dark: #A8141A;
+    --blue: #2D63B0;
+    --blue-bright: #3E9BE0;
+    --gold: #FFC62E;
+    --gold-deep: #E59A0C;
+    --cream: #FFF4E0;
+    --cream-2: #FFEBC7;
+    --ink: #1c1c1c;
+    --white: #ffffff;
+    --shadow: 6px 6px 0 var(--ink);
+    --shadow-sm: 4px 4px 0 var(--ink);
+    --shadow-lg: 10px 10px 0 var(--ink);
+    --font-head: 'Changa', sans-serif;
+    --font-body: 'Tajawal', sans-serif;
+    --font-display: 'Lalezar', cursive;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--cream);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+
+  .pixel-bg {
+    background-image:
+      linear-gradient(rgba(28,28,28,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(28,28,28,.035) 1px, transparent 1px);
+    background-size: 26px 26px;
+  }
+
+  .wrap { width: min(1180px, 92vw); margin-inline: auto; }
+
+  /* notched pixel-corner panel */
+  .pixel-box {
+    background: var(--white);
+    border: 4px solid var(--ink);
+    box-shadow: var(--shadow);
+    clip-path: polygon(
+      0 8px, 8px 8px, 8px 0, calc(100% - 8px) 0, calc(100% - 8px) 8px, 100% 8px,
+      100% calc(100% - 8px), calc(100% - 8px) calc(100% - 8px), calc(100% - 8px) 100%,
+      8px 100%, 8px calc(100% - 8px), 0 calc(100% - 8px)
+    );
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.05rem;
+    border: 4px solid var(--ink);
+    background: var(--gold);
+    color: var(--ink);
+    padding: .7em 1.5em;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform .08s ease, box-shadow .08s ease, background .15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    line-height: 1;
+  }
+  .btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+  .btn:active { transform: translate(2px,2px); box-shadow: 2px 2px 0 var(--ink); }
+  .btn--red { background: var(--red); color: #fff; }
+  .btn--blue { background: var(--blue-bright); color: #fff; }
+  .btn--ghost { background: var(--white); }
+
+  /* ---------- Nav ---------- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--white);
+    border-bottom: 4px solid var(--ink);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: .6rem 0; }
+  .brand { display: flex; align-items: center; gap: .6rem; }
+  .brand .mark {
+    width: 44px; height: 44px; background: var(--red);
+    border: 3px solid var(--ink); display: grid; place-items: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .brand .mark span {
+    font-family: var(--font-display); color: #fff; font-size: 1.5rem; line-height: 1;
+    transform: translateY(2px);
+  }
+  .brand .name { font-family: var(--font-display); font-size: 1.9rem; line-height: 1; }
+  .nav-links { display: flex; align-items: center; gap: 1.6rem; }
+  .nav-links a { font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; position: relative; }
+  .nav-links a::after {
+    content: ''; position: absolute; inset-inline: 0; bottom: -6px; height: 3px;
+    background: var(--red); transform: scaleX(0); transform-origin: right; transition: transform .2s ease;
+  }
+  .nav-links a:hover::after { transform: scaleX(1); }
+  .nav-cta { display: flex; align-items: center; gap: 1rem; }
+  .burger { display: none; }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; padding: clamp(2rem,6vw,5rem) 0 0; }
+  .hero-grid {
+    display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(1.5rem,4vw,3.5rem);
+    align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--blue); color: #fff; font-family: var(--font-head); font-weight: 700;
+    border: 3px solid var(--ink); padding: .35em .8em; font-size: .95rem; box-shadow: var(--shadow-sm);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: clamp(3.2rem, 9vw, 6.6rem); line-height: .95; letter-spacing: 0;
+  }
+  .hero h1 .pop { color: var(--red); display: inline-block; }
+  .hero h1 .pop-2 { color: var(--blue); }
+  .hero h1 .chip {
+    color: var(--ink); background: var(--gold); border: 4px solid var(--ink);
+    padding: 0 .2em; box-shadow: var(--shadow-sm); display: inline-block; transform: rotate(-2deg);
+  }
+  .hero p.lede {
+    font-size: clamp(1.05rem, 2vw, 1.35rem); font-weight: 500; max-width: 30ch;
+    margin: 1.4rem 0 2rem; line-height: 1.6;
+  }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-stats { display: flex; gap: 1.8rem; margin-top: 2.4rem; flex-wrap: wrap; }
+  .stat .num { font-family: var(--font-display); font-size: 2.2rem; color: var(--red); line-height: 1; }
+  .stat .lbl { font-weight: 700; font-size: .9rem; opacity: .8; }
+
+  .hero-art { position: relative; display: grid; place-items: center; }
+  .hero-art .frame {
+    background: var(--white); padding: 1rem 1.4rem; position: relative; z-index: 2;
+    transform: rotate(1.5deg);
+  }
+  .hero-art .frame img { width: clamp(190px, 26vw, 300px); image-rendering: pixelated; }
+  .hero-art .blob {
+    position: absolute; width: 78%; aspect-ratio: 1; background: var(--gold);
+    border: 4px solid var(--ink); z-index: 1; border-radius: 50%;
+    box-shadow: var(--shadow);
+  }
+  .idle { animation: bob 3.2s ease-in-out infinite; }
+  @keyframes bob { 0%,100%{transform: rotate(1.5deg) translateY(0);} 50%{transform: rotate(1.5deg) translateY(-12px);} }
+
+  /* floating pixels */
+  .floaty { position: absolute; image-rendering: pixelated; z-index: 0; opacity: .95; }
+  .floaty span { display: block; }
+  .f1 { top: 9%; inset-inline-end: 4%; animation: float1 5s ease-in-out infinite; }
+  .f2 { top: 34%; inset-inline-end: 1%; animation: float2 6.5s ease-in-out infinite; }
+  .f3 { bottom: 9%; inset-inline-end: 12%; animation: float1 7s ease-in-out infinite; }
+  @keyframes float1 { 0%,100%{transform: translateY(0) rotate(0);} 50%{transform: translateY(-22px) rotate(8deg);} }
+  @keyframes float2 { 0%,100%{transform: translateY(0) rotate(0);} 50%{transform: translateY(20px) rotate(-10deg);} }
+
+  /* ---------- Marquee ---------- */
+  .marquee {
+    margin-top: clamp(2.5rem,6vw,4.5rem);
+    background: var(--red); border-block: 4px solid var(--ink);
+    overflow: hidden; padding: .7rem 0;
+  }
+  .marquee-track { display: flex; gap: 2.5rem; width: max-content; animation: scroll 26s linear infinite; }
+  .marquee-track span {
+    font-family: var(--font-display); color: #fff; font-size: 1.8rem; white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 2.5rem;
+  }
+  .marquee-track .dot { color: var(--gold); }
+  @keyframes scroll { from { transform: translateX(0);} to { transform: translateX(-50%);} }
+
+  /* ---------- Section heading ---------- */
+  .sec { padding: clamp(3rem,7vw,6rem) 0; }
+  .sec-head { text-align: center; margin-bottom: clamp(2rem,4vw,3.2rem); }
+  .sec-head .kicker {
+    font-family: var(--font-head); font-weight: 800; color: var(--red); letter-spacing: .04em;
+    font-size: 1rem; display: inline-block; margin-bottom: .4rem;
+  }
+  .sec-head h2 { font-family: var(--font-display); font-size: clamp(2.4rem,6vw,4rem); line-height: 1; }
+  .sec-head p { font-weight: 500; max-width: 46ch; margin: 1rem auto 0; opacity: .85; }
+
+  /* ---------- Menu ---------- */
+  .menu { background: var(--white); border-block: 4px solid var(--ink); }
+  .menu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; }
+  .card { background: var(--cream); padding: 1.6rem 1.4rem 1.4rem; text-align: center; position: relative; }
+  .card { transition: transform .14s ease, box-shadow .14s ease; }
+  .card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
+  .card .sprite-wrap { display: grid; place-items: center; height: 140px; margin-bottom: 1rem; }
+  .card:hover [data-sprite] { animation: sprite-bounce .5s ease; }
+  @keyframes sprite-bounce { 0%,100%{transform: translateY(0);} 30%{transform: translateY(-10px);} 60%{transform: translateY(2px);} }
+  .card h3 { font-family: var(--font-head); font-weight: 800; font-size: 1.3rem; margin-bottom: .4rem; }
+  .card .desc { font-size: .92rem; font-weight: 500; opacity: .8; line-height: 1.5; min-height: 2.8em; }
+  .card .row { display: flex; align-items: center; justify-content: space-between; margin-top: 1.1rem; gap: .6rem; }
+  .price {
+    font-family: var(--font-head); font-weight: 800; background: var(--gold); border: 3px solid var(--ink);
+    padding: .25em .6em; box-shadow: var(--shadow-sm); font-size: 1.05rem; white-space: nowrap;
+  }
+  .price small { font-size: .65em; font-weight: 700; }
+  .card .add {
+    font-family: var(--font-head); font-weight: 800; background: var(--ink); color: #fff;
+    border: 3px solid var(--ink); padding: .4em .8em; cursor: pointer; box-shadow: var(--shadow-sm);
+    transition: transform .08s ease, background .15s ease;
+  }
+  .card .add:hover { background: var(--red); transform: translate(-1px,-1px); }
+  .tag-hot {
+    position: absolute; top: -14px; inset-inline-end: -8px; background: var(--red); color: #fff;
+    font-family: var(--font-head); font-weight: 800; font-size: .8rem; border: 3px solid var(--ink);
+    padding: .25em .6em; transform: rotate(6deg); box-shadow: var(--shadow-sm); z-index: 3;
+  }
+
+  /* ---------- About ---------- */
+  .about { background: var(--blue); border-bottom: 4px solid var(--ink); color: #fff; }
+  .about .sec-head h2, .about .sec-head .kicker { color: #fff; }
+  .about-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(1.5rem,4vw,3.5rem); align-items: center; }
+  .about-art { display: grid; place-items: center; }
+  .about-art .frame { background: var(--white); padding: 1rem; transform: rotate(-2deg); }
+  .about-art .frame img { width: clamp(170px, 22vw, 250px); image-rendering: pixelated; }
+  .about-copy .pixel-box { color: var(--ink); padding: 2rem 2.2rem; }
+  .about-copy h3 { font-family: var(--font-display); font-size: clamp(1.8rem,3.5vw,2.6rem); margin-bottom: 1rem; line-height: 1.05; }
+  .about-copy p { font-weight: 500; line-height: 1.8; margin-bottom: 1rem; }
+  .about-copy p:last-child { margin-bottom: 0; }
+  .about-copy .hl { background: var(--gold); padding: 0 .15em; font-weight: 700; }
+
+  /* ---------- CTA band ---------- */
+  .cta-band { background: var(--gold); border-bottom: 4px solid var(--ink); text-align: center; }
+  .cta-band .inner { padding: clamp(2.5rem,6vw,4.5rem) 0; }
+  .cta-band h2 { font-family: var(--font-display); font-size: clamp(2.4rem,6vw,4.2rem); line-height: 1; margin-bottom: 1.6rem; }
+  .cta-band .btn--red { font-size: 1.3rem; padding: .8em 2em; }
+
+  /* ---------- Top location bar ---------- */
+  .topbar { background: var(--ink); color: #fff; border-bottom: 4px solid var(--ink); }
+  .topbar .inner {
+    display: flex; align-items: center; justify-content: center; gap: .5rem;
+    padding: .5rem 0; font-family: var(--font-head); font-weight: 700; font-size: .92rem;
+  }
+  .topbar .pin { font-size: .74em; transform: translateY(-1px); }
+  .topbar b { color: var(--gold); font-weight: 800; }
+
+  /* ---------- Footer ---------- */
+  footer { background: var(--ink); color: #fff; padding: clamp(2.5rem,5vw,4rem) 0 1.5rem; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
+  .foot-brand .name { font-family: var(--font-display); font-size: 2.6rem; line-height: 1; color: var(--gold); }
+  .foot-brand p { margin-top: .8rem; opacity: .8; font-weight: 500; max-width: 30ch; line-height: 1.6; }
+  .foot-col h4 { font-family: var(--font-head); font-weight: 800; font-size: 1.1rem; margin-bottom: 1rem; color: var(--gold); }
+  .foot-col ul { list-style: none; display: grid; gap: .6rem; }
+  .foot-col li { font-weight: 500; opacity: .85; }
+  .foot-col a:hover { color: var(--gold); }
+  .socials { display: flex; gap: .7rem; margin-top: .4rem; }
+  .socials a {
+    width: 40px; height: 40px; border: 3px solid #fff; display: grid; place-items: center;
+    font-family: var(--font-head); font-weight: 800; transition: background .15s ease, color .15s ease;
+  }
+  .socials a:hover { background: var(--gold); color: var(--ink); border-color: var(--gold); }
+  .foot-bottom { text-align: center; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 2px dashed rgba(255,255,255,.25); opacity: .7; font-weight: 500; font-size: .9rem; }
+
+  /* ---------- Packaging / Bags ---------- */
+  .pack { background: var(--cream-2); border-bottom: 4px solid var(--ink); }
+  .pack-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem,5vw,4rem); align-items: center; }
+  .pack-copy h3 { font-family: var(--font-display); font-size: clamp(1.9rem,4vw,2.8rem); line-height: 1.05; margin-bottom: 1rem; }
+  .pack-copy > p { font-weight: 500; line-height: 1.8; max-width: 38ch; opacity: .9; }
+  .pack-feats { display: grid; gap: 1rem; margin-top: 1.8rem; }
+  .feat { display: flex; align-items: center; gap: .9rem; }
+  .feat .ic {
+    width: 46px; height: 46px; flex: 0 0 46px; background: var(--gold); border: 3px solid var(--ink);
+    display: grid; place-items: center; box-shadow: var(--shadow-sm); font-size: 1.3rem;
+  }
+  .feat b { font-family: var(--font-head); font-weight: 800; display: block; font-size: 1.05rem; }
+  .feat span.t { font-weight: 500; font-size: .9rem; opacity: .8; }
+
+  .bag-stage { position: relative; display: grid; place-items: center; min-height: 420px; }
+  .bag { position: relative; width: 250px; }
+  .bag .handle {
+    position: absolute; top: -50px; left: 50%; transform: translateX(-50%);
+    width: 130px; height: 62px; border: 5px solid var(--ink); border-bottom: none;
+    border-radius: 70px 70px 0 0; background: transparent; z-index: 0;
+  }
+  .bag-body {
+    position: relative; z-index: 1; width: 250px; height: 290px;
+    border: 4px solid var(--ink); box-shadow: var(--shadow-lg);
+    display: flex; overflow: hidden;
+  }
+  .bag .front { flex: 0 0 72%; background: #CFA068; display: grid; place-items: center; padding-top: 30px; }
+  .bag .gusset { flex: 1; background: #A9783F; border-left: 4px solid rgba(0,0,0,.22); }
+  .bag .fold {
+    position: absolute; top: 0; left: 0; right: 0; height: 42px; z-index: 3;
+    background: #BE8E55; border-bottom: 4px solid var(--ink);
+    background-image: repeating-linear-gradient(90deg, transparent 0 30px, rgba(0,0,0,.13) 30px 33px);
+  }
+  .bag .label {
+    position: relative; z-index: 2; width: 118px; background: #fff; padding: 8px 8px 6px;
+    border: 4px solid var(--ink); box-shadow: var(--shadow-sm);
+  }
+  .bag .label img { width: 100%; image-rendering: pixelated; }
+  .bag.is-back {
+    position: absolute; transform: rotate(-9deg) translate(46px, 26px); z-index: 0; filter: brightness(.92) saturate(.95);
+  }
+  .bag.is-front { z-index: 2; transition: transform .2s ease; }
+  .bag-stage:hover .bag.is-front { transform: translateY(-8px) rotate(1.5deg); }
+  .bag .cup-float { position: absolute; bottom: -10px; left: -54px; z-index: 4; image-rendering: pixelated; animation: bob 3.4s ease-in-out infinite; }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .idle, .floaty, .marquee-track { animation: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px) {
+    .floaty { display: none; }
+    .hero-grid { grid-template-columns: 1fr; text-align: center; }
+    .hero p.lede { margin-inline: auto; }
+    .hero-cta, .hero-stats { justify-content: center; }
+    .hero-art { order: -1; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-art { order: -1; }
+    .pack-grid { grid-template-columns: 1fr; }
+    .bag.is-back { transform: rotate(-9deg) translate(40px, 20px) scale(.92); }
+    .menu-grid { grid-template-columns: repeat(2, 1fr); }
+    .foot-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .burger {
+      display: grid; place-items: center; width: 44px; height: 44px;
+      border: 3px solid var(--ink); background: var(--gold); box-shadow: var(--shadow-sm); cursor: pointer;
+    }
+    .burger span { font-size: 1.4rem; line-height: 1; }
+  }
+  @media (max-width: 520px) {
+    .menu-grid { grid-template-columns: 1fr; }
+    .nav-cta .btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP LOCATION BAR -->
+<div class="topbar">
+  <div class="wrap inner">
+    <span class="pin">📍</span>
+    <span>لاقونا بـ <b>الذيابية</b> — بجانب المستوصف</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" data-screen-label="brand">
+      <span class="mark"><span>ع</span></span>
+      <span class="name">عَ الماشي</span>
+    </a>
+    <nav class="nav-links">
+      <a href="#menu">اللائحة</a>
+      <a href="#story">قصتنا</a>
+      <a href="#order">الفروع</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#order" class="btn btn--red">اطلب هلّق</a>
+      <button class="burger" aria-label="اللائحة"><span>☰</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero pixel-bg" id="top" data-screen-label="hero">
+  <div class="floaty f1"><div data-sprite="cup" data-px="7"></div></div>
+  <div class="floaty f2"><div data-sprite="cheese" data-px="6"></div></div>
+  <div class="floaty f3"><div data-sprite="veg" data-px="6"></div></div>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <span class="eyebrow" style="text-align: right">▸ مفتوحين كل يوم — عَ الماشي</span>
+      <h1>بطاطا<br /><span class="pop">عَ</span> <span class="chip">الماشي</span></h1>
+      <p class="lede">سندويشات بطاطا طازة، مقرمشة من برّا وطريّة من جوّا — بتتعمل قدّامك بدقيقتين.</p>
+      <div class="hero-cta">
+        <a href="#menu" class="btn btn--red">شوف اللائحة</a>
+        <a href="#order" class="btn btn--ghost">▸ اطلب توصيل</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat"><div class="num">+٤</div><div class="lbl">أصناف بطاطا</div></div>
+        <div class="stat"><div class="num">٢ دقيقة</div><div class="lbl">وسندويشك جاهز</div></div>
+        <div class="stat"><div class="num">١٠٠٪</div><div class="lbl">طازة على طول</div></div>
+      </div>
+    </div>
+    <div class="hero-art">
+      <div class="blob"></div>
+      <div class="frame pixel-box idle">
+        <img src="assets/galash-logo-cropped.png" alt="شخصية عَ الماشي — طبّاخ البطاطا" />
+      </div>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>عَ الماشي <b class="dot">●</b> بطاطا عَ الماشي <b class="dot">●</b> طازة على طول <b class="dot">●</b> مقرمشة وطريّة <b class="dot">●</b> </span>
+      <span>عَ الماشي <b class="dot">●</b> بطاطا عَ الماشي <b class="dot">●</b> طازة على طول <b class="dot">●</b> مقرمشة وطريّة <b class="dot">●</b> </span>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu sec" id="menu" data-screen-label="menu">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">▸ اللائحة</span>
+      <h2>اختار سندويشك</h2>
+      <p>كل سندويش بطاطا بينعمل حسب الطلب، بحشوة دسمة وخبز طازة. اختار يلي على كيفك.</p>
+    </div>
+    <div class="menu-grid">
+      <article class="card pixel-box reveal">
+        <span class="tag-hot">الأكثر طلباً</span>
+        <div class="sprite-wrap"><div data-sprite="cheese" data-px="13"></div></div>
+        <h3>بطاطا بالجبنة</h3>
+        <p class="desc">بطاطا مهروسة كريمي مع جبنة دايبة ولمسة بهارات سرّية.</p>
+        <div class="row">
+          <span class="price">٢٥ <small>ج.م</small></span>
+          <button class="add">+ ضيف</button>
+        </div>
+      </article>
+
+      <article class="card pixel-box reveal">
+        <div class="sprite-wrap"><div data-sprite="veg" data-px="13"></div></div>
+        <h3>بطاطا بالخضرا</h3>
+        <p class="desc">خضرا مشكّلة طازة، بندورة وخس مقرمش فوق بطاطا ذهبية.</p>
+        <div class="row">
+          <span class="price">٢٢ <small>ج.م</small></span>
+          <button class="add">+ ضيف</button>
+        </div>
+      </article>
+
+      <article class="card pixel-box reveal">
+        <div class="sprite-wrap"><div data-sprite="mushroom" data-px="13"></div></div>
+        <h3>بطاطا بالمشروم</h3>
+        <p class="desc">مشروم سوتيه بالزبدة مع بطاطا طريّة وصوص كريمي غني.</p>
+        <div class="row">
+          <span class="price">٣٠ <small>ج.م</small></span>
+          <button class="add">+ ضيف</button>
+        </div>
+      </article>
+
+      <article class="card pixel-box reveal">
+        <div class="sprite-wrap"><div data-sprite="cup" data-px="13"></div></div>
+        <h3>كاسة البطاطا</h3>
+        <p class="desc">بطاطا مقرمشة بكاسة، بتتاكل عَ الماشي مع الصوص المفضّل.</p>
+        <div class="row">
+          <span class="price">١٨ <small>ج.م</small></span>
+          <button class="add">+ ضيف</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="about sec pixel-bg" id="story" data-screen-label="story">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">▸ قصتنا</span>
+      <h2>بلّشنا من كوخ صغير</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-art reveal">
+        <div class="frame pixel-box">
+          <img src="assets/galash-logo-cropped.png" alt="عَ الماشي" />
+        </div>
+      </div>
+      <div class="about-copy reveal">
+        <div class="pixel-box">
+          <h3>عَ الماشي… بداية بسيطة</h3>
+          <p>كل القصة هلّق <span class="hl">كوخ صغير</span>، ومنّو بنطلّع ألذّ سندويش بطاطا بأبسط طريقة. بداية صغيرة، بس حبّ كبير بكل لقمة.</p>
+          <p>كل حبة بطاطا مننقّيها بإيدينا، وكل سندويش بينعمل قدّامك على طول. ما منستعجل عالطعمة — منستعجل بس لتوصلك عَ الماشي.</p>
+          <p>لسا بالبداية… بس وعدناك إنو نكبر معك، لقمة لقمة. 🥔</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKAGING / BAGS -->
+<section class="pack sec pixel-bg" id="pack" data-screen-label="pack">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="kicker">▸ خدها معك</span>
+      <h2>كيس عَ الماشي</h2>
+      <p>كل طلب بيوصلك بكيس ورقي بنّي عليه شعارنا — يطوي عَ الماشي وبيحافظ على سندويشك سخن وطازة.</p>
+    </div>
+    <div class="pack-grid">
+      <div class="pack-copy reveal">
+        <h3>تغليف بسيط… بطعمة مزبوطة</h3>
+        <p>ما منحب التعقيد. كيس ورقي نظيف، شعار عَ الماشي، وسندويش بطاطا جوّاتو — هيك بس، وعَ الماشي.</p>
+        <div class="pack-feats">
+          <div class="feat">
+            <div class="ic">🌿</div>
+            <div><b>ورق صديق للبيئة</b><span class="t">كيس كرافت طبيعي بينحلّ بسهولة</span></div>
+          </div>
+          <div class="feat">
+            <div class="ic">🔥</div>
+            <div><b>بيضل سخن</b><span class="t">بيحافظ على البطاطا مقرمشة لحد ما توصل</span></div>
+          </div>
+          <div class="feat">
+            <div class="ic">🛵</div>
+            <div><b>مظبوط للتوصيل</b><span class="t">شكل وحجم سهل تحملو بإيد وحدة</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="bag-stage reveal">
+        <div class="bag is-back" aria-hidden="true">
+          <div class="handle"></div>
+          <div class="bag-body">
+            <div class="fold"></div>
+            <div class="front"></div>
+            <div class="gusset"></div>
+          </div>
+        </div>
+        <div class="bag is-front">
+          <div class="handle"></div>
+          <div class="bag-body">
+            <div class="fold"></div>
+            <div class="front">
+              <div class="label"><img src="assets/galash-logo-cropped.png" alt="شعار عَ الماشي على الكيس" /></div>
+            </div>
+            <div class="gusset"></div>
+          </div>
+          <div class="cup-float"><div data-sprite="cup" data-px="9"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band" id="order" data-screen-label="order">
+  <div class="wrap inner">
+    <h2>جوعان؟ خودها عَ الماشي!</h2>
+    <a href="#" class="btn btn--red">اطلب هلّق</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer data-screen-label="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="name">عَ الماشي</div>
+        <p>بطاطا عَ الماشي. طازة، مقرمشة، ودايماً على كيفك. تعا دوق الفرق.</p>
+        <div class="socials">
+          <a href="#" aria-label="انستجرام">IG</a>
+          <a href="#" aria-label="تيك توك">TT</a>
+          <a href="#" aria-label="واتساب">WA</a>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>مواعيد العمل</h4>
+        <ul>
+          <li>السبت — الخميس: ١٢ ظهراً — ٢ بعد منتصف الليل</li>
+          <li>الجمعة: ٤ عصراً — ٢ بعد منتصف الليل</li>
+          <li>التوصيل متاح طوال أوقات العمل</li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>تواصل معنا</h4>
+        <ul>
+          <li><a href="tel:+200000000000">📞 ٠١٠ ٠٠٠ ٠٠٠٠</a></li>
+          <li><a href="#">📍 الذيابية — بجانب المستوصف</a></li>
+          <li><a href="#">✉️ ahlan@galash.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">© ٢٠٢٦ عَ الماشي — كل الحقوق محفوظة · بطاطا عَ الماشي</div>
+  </div>
+</footer>
+
+<script src="sprites.js"></script>
+<script>
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  // tiny cart toast on add
+  document.querySelectorAll('.add').forEach((b) => {
+    b.addEventListener('click', () => {
+      b.textContent = '✓ انضاف';
+      b.style.background = 'var(--blue)';
+      setTimeout(() => { b.textContent = '+ ضيف'; b.style.background = ''; }, 1100);
+    });
+  });
+
+  // mobile burger -> reveal nav links inline
+  const burger = document.querySelector('.burger');
+  burger && burger.addEventListener('click', () => {
+    const links = document.querySelector('.nav-links');
+    const open = links.style.display === 'flex';
+    links.style.display = open ? '' : 'flex';
+    links.style.position = 'absolute';
+    links.style.flexDirection = 'column';
+    links.style.top = '100%';
+    links.style.insetInlineEnd = '0';
+    links.style.background = '#fff';
+    links.style.border = '4px solid var(--ink)';
+    links.style.padding = '1rem 1.5rem';
+    links.style.gap = '1rem';
+    if (open) links.removeAttribute('style');
+  });
+</script>
+</body>
+</html>
+
+<style id="__om-edit-overrides">
+#top >.f1 >[role="img"] >span:nth-child(91) { text-align: center !important }
+#top >.f1 >[role="img"] >span:nth-child(91) { text-align: right !important }
+#top >.f1 >[role="img"] >span:nth-child(91) { text-align: justify !important }
+</style>
